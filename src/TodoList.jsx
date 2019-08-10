@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import TodoItem from './TodoItem';
 
 class TodoList extends Component {
@@ -14,8 +15,43 @@ class TodoList extends Component {
     this.handleItemDelet = this.handleItemDelet.bind(this);
   }
 
-  handleChange() {
-    const value = this.input.value;
+  componentDidMount() {
+    axios.get('https://api.myjson.com/bins/h4n3v')
+      .then((res) => {
+        console.log(res);
+        this.setState(() => {
+          return {
+            list: res.data
+          }
+        })
+      }).catch((err) => {
+        console.log(err)
+      })
+  }
+  
+  render() {
+    return (
+      <>
+        <div>
+          <label htmlFor='insert'>输入内容</label>
+          <input 
+            id='insert'
+            value={this.state.inputValue}
+            onChange={this.handleChange}
+            />
+          <button onClick={this.handleBtnClick}>提交</button>
+        </div>
+        <ul>
+          {
+            this.getTodoItem()
+          }
+        </ul>
+      </>
+    )
+  }
+
+  handleChange(e) {
+    const value = e.target.value;
     this.setState(() => {
       return {
         inputValue: value
@@ -29,8 +65,6 @@ class TodoList extends Component {
         list: [...preState.list, preState.inputValue],
         inputValue: ''
       }
-    }, () => {
-      console.log(this.ul.querySelectorAll('div').length);
     });
   }
   
@@ -46,60 +80,13 @@ class TodoList extends Component {
     return this.state.list.map((item, index) => {
       return (
         <TodoItem
-        key={index} 
-        content={item} 
-        index={index}
-        handleItemDelet={this.handleItemDelet}
+          key={index} 
+          content={item} 
+          index={index}
+          handleItemDelet={this.handleItemDelet}
         />        
-        )
-      })
-    }
-    
-    // 在组件即将被挂在到页面上
-    componentWillMount() {
-      console.log('componentWillMount');
-    }
-
-    // 在组件挂在结束后执行
-    componentDidMount() {
-      console.log('componentDidMount');
-    }
-
-    // 组件被更新之前
-    shouldComponentUpdate() {
-      console.log('shouldCompoentUpdata');
-      return true;
-    }
-
-    componentWillUpdate() {
-      console.log('componentWillUpdate');
-    }
-
-    componentDidUpdate() {
-      console.log('componentDidUpdate')
-    }
-
-    render() {
-      console.log('render');
-      return (
-        <>
-        <div>
-          <label htmlFor='insert'>输入内容</label>
-          <input 
-            id='insert'
-            ref={(input) => {this.input = input}}
-            value={this.state.inputValue}
-            onChange={this.handleChange}
-          />
-          <button onClick={this.handleBtnClick}>提交</button>
-        </div>
-        <ul ref={(ul) => {this.ul = ul}}>
-          {
-            this.getTodoItem()
-          }
-        </ul>
-      </>
-    )
+      )
+    })
   }
 }
 

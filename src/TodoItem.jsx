@@ -13,54 +13,27 @@ class TodoItem extends Component {
     handleItemDelet(index);
   }
 
-  // 在组件即将被挂在到页面上
-  componentWillMount() {
-    console.log('componentWillMount-item');
-  }
-
-  // 在组件挂在结束后执行
-  componentDidMount() {
-    console.log('componentDidMount-item');
-  }
-
-  // 组件被更新之前
-  shouldComponentUpdate() {
-    console.log('shouldCompoentUpdata-item');
-    return true;
-  }
-
-  componentWillUpdate() {
-    console.log('componentWillUpdate-item');
-  }
-
-  componentDidUpdate() {
-    console.log('componentDidUpdate-item')
-  }
-
-  componentWillReceiveProps() {
-    console.log('componentWillReceiveProps')
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.content !== this.props.content) {
+      return true;
+    }
+    return false; 
   }
 
   render() {
-    console.log('render-item');
-    const { content, test } = this.props;
+    const { content} = this.props;
     return (
       <div onClick={this.handleClick}>
-        {content} - {test}
+        {content}
       </div>
     )
   }
 }
 
 TodoItem.propTypes = {
-  test: PropTypes.string.isRequired,
   content: PropTypes.string,
   handleItemDelet: PropTypes.func,
   index: PropTypes.number
-}
-
-TodoItem.defaultProps = {
-  test: 'hello'
 }
 
 export default TodoItem;
