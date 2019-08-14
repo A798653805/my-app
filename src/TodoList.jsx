@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import TodoListUI from './TodoListUI';
-import { getInputChangeAction, getAddItemAction, getDeletItemAction } from './store/actionCreator'
+import axios from 'axios'
+// redux-thunk 方案
+// import { getInputChangeAction, getAddItemAction, getDeletItemAction, getTodoList } from './store/actionCreator'
+import { getInputChangeAction, getAddItemAction, getDeletItemAction, getInitList } from './store/actionCreator'
 import store from './store/index'
 import 'antd/dist/antd.css'
 
@@ -15,6 +18,18 @@ class TodoList extends Component {
     this.handleItemDelete = this.handleItemDelete.bind(this)
     
     store.subscribe(this.handleStoreChange);
+  }
+
+  componentDidMount() {
+    const action = getInitList();
+
+    store.dispatch(action);
+    // axios.get('https://api.myjson.com/bins/h4n3v').then((res) => {
+    //   const data = res.data;
+    //   const action = initListAction(data);
+
+    //   store.dispatch(action);
+    // })
   }
   
   render() {

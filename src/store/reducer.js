@@ -1,12 +1,7 @@
-import { CHANGE_INPUT_VALUE, ADD_LIST, DELET_ITEM } from './actionType'
+import { CHANGE_INPUT_VALUE, ADD_LIST, DELET_ITEM, INIT_LIST_ACTION } from './actionType'
 const defaultState = {
   inputValue: '',
-  list: [
-    'learn React',
-    'learn HTTP',
-    'learn JS',
-    'learn Node'
-  ]
+  list: []
 };
 
 // 可以接收state，但是不能修改state
@@ -23,6 +18,9 @@ export default (state = defaultState, action) => {
       break;
     case DELET_ITEM:
       newState.list.splice(action.value, 1);
+      break;
+    case INIT_LIST_ACTION:
+      newState.list = action.data;
       break;
     default:
       return state
